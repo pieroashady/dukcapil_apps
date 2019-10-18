@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Form.ScanForm">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <view
+                android:id="@+id/view"
+                class="androidx.viewpager.widget.ViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
+            <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="104dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/aldrich"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:text="UPLOAD KTP"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/name_text_input"-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                android:layout_width="300dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/name_edit_text"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:hint="Choose KTP" />-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--            <view-->
+<!--                android:id="@+id/view2"-->
+<!--                class="androidx.viewpager.widget.ViewPager"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="15dp" />-->
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/txtBase"-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                android:layout_width="300dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:gravity="center">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/editBase"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:hint="Your Base64" />-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+            <view
+                android:id="@+id/view4"
+                class="androidx.viewpager.widget.ViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <ImageButton
+                android:id="@+id/img1"
+                android:layout_width="300dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                app:srcCompat="@drawable/photo_camera" />
+
+            <view
+                android:id="@+id/view3"
+                class="androidx.viewpager.widget.ViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <Button
+                android:id="@+id/btnScan"
+                android:layout_width="300dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginRight="-4dp"
+                android:background="@drawable/btn_purple_a400"
+                android:gravity="center"
+                android:text="Scan KTP"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <view
+                android:id="@+id/view5"
+                class="androidx.viewpager.widget.ViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <TextView
+                android:id="@+id/txtResult"
+                android:layout_width="match_parent"
+                android:layout_height="104dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/aldrich"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text="RESULT"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:visibility="gone"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/nik"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/aldrich"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text=""
+                android:textAlignment="center"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/isIdCard"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/aldrich"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text=""
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:visibility="gone"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/isPhotoInside"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:fontFamily="@font/aldrich"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:text=""
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:visibility="gone"
+                tools:visibility="gone" />
+
+            <view
+                android:id="@+id/view55"
+                class="androidx.viewpager.widget.ViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/imgFace"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="35dp"
+                android:layout_marginRight="20dp"
+                android:foregroundGravity="center"
+                android:visibility="visible"
+                tools:srcCompat="@tools:sample/avatars[0]"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/imgSignature"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="35dp"
+                android:foregroundGravity="center"
+                android:visibility="visible"
+                tools:srcCompat="@tools:sample/avatars[0]"
+                tools:visibility="visible" />
+
+
+        </LinearLayout>
+
+            <view
+                android:id="@+id/view52"
+                class="androidx.viewpager.widget.ViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <view
+                android:id="@+id/view51"
+                class="androidx.viewpager.widget.ViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
