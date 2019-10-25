@@ -7,21 +7,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.dika.dukcapil.Form.NikValidation;
 import com.dika.dukcapil.Form.ScanForm;
 import com.dika.dukcapil.Form.SimilarForm;
+import com.dika.dukcapil.Form.TokenForm;
+import com.dika.dukcapil.Form.VideoThumbnail;
 import com.dika.dukcapil.R;
 
 public class MenuActivity extends AppCompatActivity {
 
-    Button btnScan, btnSimilar;
+    Button btnScan, btnSimilar, btnVideo, btnToken, btnNik;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        btnScan = findViewById(R.id.btnScan);
+        btnScan = findViewById(R.id.btnValidate);
         btnSimilar = findViewById(R.id.btnSimilar);
+        btnVideo = findViewById(R.id.btnVideo);
+        btnToken = findViewById(R.id.btnToken);
+        btnNik =  findViewById(R.id.btnNik);
+
+        btnToken.setOnClickListener((c)->{
+            goToTokenForm();
+        });
 
         btnScan.setOnClickListener((x)->{
             goToScanActivity();
@@ -31,7 +41,19 @@ public class MenuActivity extends AppCompatActivity {
             goToVideoCheck();
         });
 
+        btnVideo.setOnClickListener((f)->{
+            goToVideoThumbnail();
+        });
+
+        btnNik.setOnClickListener((k)->{
+            goToValidateNik();
+        });
+
 //        initToolbar();
+    }
+
+    private void goToValidateNik() {
+        startActivity(new Intent(MenuActivity.this, NikValidation.class));
     }
 
     private void initToolbar() {
@@ -40,6 +62,14 @@ public class MenuActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Basic");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void goToTokenForm(){
+        startActivity(new Intent(MenuActivity.this, TokenForm.class));
+    }
+
+    private void goToVideoThumbnail(){
+        startActivity(new Intent(MenuActivity.this, VideoThumbnail.class));
     }
 
     private void goToScanActivity(){

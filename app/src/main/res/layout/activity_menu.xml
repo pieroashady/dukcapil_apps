@@ -33,13 +33,33 @@
         android:layout_height="10dp" />
 
     <Button
-        android:id="@+id/btnScan"
+        android:id="@+id/btnToken"
         android:layout_width="300dp"
         android:layout_height="55dp"
         android:layout_gravity="center"
         android:layout_marginLeft="-4dp"
         android:layout_marginRight="-4dp"
-        android:background="@drawable/btn_purple_a400"
+        android:background="@drawable/btn_rounded_accent"
+        android:gravity="center"
+        android:text="Get Token"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+    <view
+        android:id="@+id/view122"
+        class="androidx.viewpager.widget.ViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <Button
+        android:id="@+id/btnValidate"
+        android:layout_width="300dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="-4dp"
+        android:layout_marginRight="-4dp"
+        android:background="@drawable/btn_rounded_accent"
         android:gravity="center"
         android:text="Scan KTP"
         android:textAllCaps="false"
@@ -53,15 +73,55 @@
         android:layout_height="10dp" />
 
     <Button
+        android:id="@+id/btnNik"
+        android:layout_width="300dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="-4dp"
+        android:layout_marginRight="-4dp"
+        android:background="@drawable/btn_rounded_accent"
+        android:gravity="center"
+        android:text="Validasi NIK"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+    <view
+        android:id="@+id/adsiuia"
+        class="androidx.viewpager.widget.ViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <Button
         android:id="@+id/btnSimilar"
         android:layout_width="300dp"
         android:layout_height="55dp"
         android:layout_gravity="center"
         android:layout_marginLeft="-4dp"
         android:layout_marginRight="-4dp"
-        android:background="@drawable/btn_purple_a400"
+        android:background="@drawable/btn_rounded_accent"
         android:gravity="center"
         android:text="Similarity Check"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
+
+    <view
+        android:id="@+id/view20"
+        class="androidx.viewpager.widget.ViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
+
+    <Button
+        android:id="@+id/btnVideo"
+        android:layout_width="300dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="-4dp"
+        android:layout_marginRight="-4dp"
+        android:background="@drawable/btn_rounded_accent"
+        android:gravity="center"
+        android:text="Record Video"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textStyle="bold" />

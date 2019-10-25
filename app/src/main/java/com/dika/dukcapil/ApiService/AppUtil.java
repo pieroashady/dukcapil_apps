@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.dika.dukcapil.Form.TokenForm;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -34,12 +36,15 @@ import java.util.Vector;
  */
 
 public class AppUtil {
+    SharedPreferences sharedPreferences;
 
-//    public static String API_KEY ="59D3CFCA29DB8697C4962A36EEB653C8";
-  //  public static String BASE_URL = "http://178.128.55.129/";
-   public static String BASE_URL = "https://ec2.primteksolusindo.com/demo/primebiometry/api/dika/";
-   public static String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzE0MTc5OTgsImlzcyI6InByaW10ZWtzb2x1c2luZG8uY29tIiwiYXVkIjoiejNqSzNTS0VxakdWaGtTNVZpemw1V3NuMGhSaU0zdHo1a003dWtVNk8wNUpGQ1FiYzV3NFpQM3V6M2Z6aWtsZ2U0R2l1RVN4QWd2bE1POGh5NzBnWXRLIn0.sFMrjMBjGAWPLWzb5pY9rfF-qX2drZjizj1jrLxLoLA";
-
+    //    public static String API_KEY ="59D3CFCA29DB8697C4962A36EEB653C8";
+    //  public static String BASE_URL = "http://178.128.55.129/";
+    public static String API_KEY = "7Ci6IqHvKItAGKmGeEWAdjG9HMAyB1PQyhLk5tSQ4CPUkk65OYfDv3W8crrPgruS8tlKUHM1Qk45Tjpom0V3N91QLPKnhdgWLBiu";
+    public static String API_SECRET = "cuSVrdyCLEQlrz0lotnbChuzX9PEsBWmNTJxCI17h87VKuBPyIqQn5v56qkIqsbyNz9cLooB2fvBYfXBI6b4FzUKGB1ZYkm84vn6";
+    public static String GET_TOKEN = TokenForm.API_TOKEN;
+    public static String BASE_URL = "https://ec2.primteksolusindo.com/demo/primebiometry/api/dika/";
+    public static String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzE4NDk5OTksImlzcyI6InByaW10ZWtzb2x1c2luZG8uY29tIiwiYXVkIjoiejNqSzNTS0VxakdWaGtTNVZpemw1V3NuMGhSaU0zdHo1a003dWtVNk8wNUpGQ1FiYzV3NFpQM3V6M2Z6aWtsZ2U0R2l1RVN4QWd2bE1POGh5NzBnWXRLIn0.CMna17zu_XFeZaUxA8IoEB-sX-Qqb7_ReCe9OPriiKw";
     public static boolean isEmpty(EditText editText) {
         return editText.getText() == null
                 || editText.getText().toString().isEmpty();
@@ -80,60 +85,66 @@ public class AppUtil {
         context.startActivity(intent);
     }
 
-    public static String formatCurrency(String s){
-        if( s== null){
+    public static String formatCurrency(String s) {
+        if (s == null) {
 
-            s="0";
-        }else{
-            if (s.equalsIgnoreCase("")){
-                s="0";
+            s = "0";
+        } else {
+            if (s.equalsIgnoreCase("")) {
+                s = "0";
             }
         }
         return insertStringRev(s, ",", 3);
     }
-    public static String formatCurrency(int s){
-        return insertStringRev(s+"", ",", 3);
+
+    public static String formatCurrency(int s) {
+        return insertStringRev(s + "", ",", 3);
     }
+
     public static String insertStringRev(String original, String sInsert, int igroup) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < original.length(); i++) {
 
-            if (((original.length()-i)%igroup)==0 && igroup!=0 && i!=0) {
-                sb.append(sInsert+original.substring(i, i+1));
-            }else {
-                sb.append(original.substring(i, i+1));
+            if (((original.length() - i) % igroup) == 0 && igroup != 0 && i != 0) {
+                sb.append(sInsert + original.substring(i, i + 1));
+            } else {
+                sb.append(original.substring(i, i + 1));
             }
         }
         return sb.toString();
     }
-    public static int getIntCut(String s){
-        if (s==null){
-            s="0";
+
+    public static int getIntCut(String s) {
+        if (s == null) {
+            s = "0";
         }
         StringBuffer sbBuffer = new StringBuffer("");
         for (int i = 0; i < s.length(); i++) {
-            if ("1234567890".indexOf(s.substring(i,i+1))>=0) {
-                sbBuffer.append(s.substring(i,i+1));
-            }else{
+            if ("1234567890".indexOf(s.substring(i, i + 1)) >= 0) {
+                sbBuffer.append(s.substring(i, i + 1));
+            } else {
                 break;
             }
         }
         return getInt(sbBuffer.toString());
     }
-    public static int getInt(String s){
+
+    public static int getInt(String s) {
         try {
             return Integer.parseInt(s);
         } catch (Exception e) {
             return 0;
         }
     }
-    public static String Now(){
+
+    public static String Now() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         return sdf.format(calendar.getTime());
     }
-    public static String NowX(){
+
+    public static String NowX() {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 
@@ -147,8 +158,8 @@ public class AppUtil {
             Method m[] = c.getMethods();
             for (int i = 0; i < m.length; i++) {
                 if (m[i].getName().indexOf("get") == 0) {
-                    if (m[i].getName().equalsIgnoreCase("getDendasisa")){
-                        String x="";
+                    if (m[i].getName().equalsIgnoreCase("getDendasisa")) {
+                        String x = "";
                     }
                     String name = m[i].getName().toLowerCase().substring(3, 4) + m[i].getName().substring(4);
                     hashMap.put(name, m[i].invoke(obj, new Object[0]));
@@ -159,39 +170,43 @@ public class AppUtil {
         }
         return hashMap;
     }
+
     public static Vector<String> spliter(String original, String separator) {
         Vector<String> nodes = new Vector<String>();
         int index = original.indexOf(separator);
-        while(index >= 0) {
-            nodes.addElement( original.substring(0, index) );
-            original = original.substring(index+separator.length());
+        while (index >= 0) {
+            nodes.addElement(original.substring(0, index));
+            original = original.substring(index + separator.length());
             index = original.indexOf(separator);
         }
-        nodes.addElement( original );
+        nodes.addElement(original);
         return nodes;
     }
 
-    public static String getSetting(Context context, String key, String def){//baca data yang disimpan(string)
+    public static String getSetting(Context context, String key, String def) {//baca data yang disimpan(string)
         SharedPreferences settings = context.getApplicationContext().getSharedPreferences("rkrzmail.cctv", 0);
         String silent = settings.getString(key, def);
         return silent;
     }
-    public static void setSetting(Context context, String key, String val){//Simpat data string
+
+    public static void setSetting(Context context, String key, String val) {//Simpat data string
         SharedPreferences settings = context.getApplicationContext().getSharedPreferences("rkrzmail.cctv", 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, val);
         editor.commit();
     }
-    public static int getNumber(String s){
+
+    public static int getNumber(String s) {
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < s.length(); i++) {
-            if ("01234567890".indexOf(s.charAt(i))!=-1) {
+            if ("01234567890".indexOf(s.charAt(i)) != -1) {
                 buf.append(s.charAt(i));
             }
         }
         try {
             return Integer.parseInt(buf.toString());
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
         return 0;
     }
 
@@ -200,16 +215,16 @@ public class AppUtil {
         String format = new SimpleDateFormat("yyyyMMddHHmmss",
                 java.util.Locale.getDefault()).format(new Date());
 
-        if (imagefilename==null){
+        if (imagefilename == null) {
 
-            imagefilename = format ;
-        }else{
-            imagefilename+=format;
+            imagefilename = format;
+        } else {
+            imagefilename += format;
         }
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
         File f = new File(Environment.getExternalStorageDirectory()
-                + File.separator + imagefilename+".jpg");
+                + File.separator + imagefilename + ".jpg");
         f.createNewFile();
         FileOutputStream fo = new FileOutputStream(f);
         fo.write(bytes.toByteArray());
@@ -226,7 +241,7 @@ public class AppUtil {
 
     /**
      * Checks if the app has permission to write to device storage
-     *
+     * <p>
      * If the app does not has permission then the user will be prompted to grant permissions
      *
      * @param activity
@@ -253,22 +268,22 @@ public class AppUtil {
         return input == null ? "-" : input;
     }
 
-    public static String setZero(String input){
+    public static String setZero(String input) {
 
-        if(input !=null){
-            if(input.length() <2){
-                input = "0"+input;
+        if (input != null) {
+            if (input.length() < 2) {
+                input = "0" + input;
             }
         }
         return input;
     }
 
-    public static String getSimpleDatetimeFromStringFormat(String date){
+    public static String getSimpleDatetimeFromStringFormat(String date) {
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//2019-04-25 13:23:53
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//2019-04-25 13:23:53
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
         } catch (ParseException e) {
             return "";
         }
@@ -279,12 +294,12 @@ public class AppUtil {
 
     }
 
-    public static String getLengkapDatetimeFromStringFormat(String date){
+    public static String getLengkapDatetimeFromStringFormat(String date) {
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//2019-04-25 13:23:53
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//2019-04-25 13:23:53
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
         } catch (ParseException e) {
             return "";
         }
@@ -296,12 +311,12 @@ public class AppUtil {
     }
 
 
-    public static String getSimpleHourtimeFromStringFormat(String date){
+    public static String getSimpleHourtimeFromStringFormat(String date) {
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//2019-04-25 13:23:53
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//2019-04-25 13:23:53
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
         } catch (ParseException e) {
             return "";
         }
@@ -312,12 +327,12 @@ public class AppUtil {
 
     }
 
-    public static String getYearFromStringFormat(String date){
+    public static String getYearFromStringFormat(String date) {
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//2019-04-25 13:23:53
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");//2019-04-25 13:23:53
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
         } catch (ParseException e) {
             return "";
         }
@@ -328,12 +343,12 @@ public class AppUtil {
 
     }
 
-    public static String getMonthFromStringFormat(String date){  //2019-04-25 13:23:53
+    public static String getMonthFromStringFormat(String date) {  //2019-04-25 13:23:53
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
         } catch (ParseException e) {
             return "";
         }
@@ -343,12 +358,13 @@ public class AppUtil {
         return format.format(date1);
 
     }
-    public static String getMonthFromStringFormat2(String date){  //2019-04-25 13:23:53
+
+    public static String getMonthFromStringFormat2(String date) {  //2019-04-25 13:23:53
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
         } catch (ParseException e) {
             return "";
         }
@@ -358,12 +374,13 @@ public class AppUtil {
         return format.format(date1);
 
     }
-    public static String getDateFromStringFormat(String date){  //2019-04-25 13:23:53
+
+    public static String getDateFromStringFormat(String date) {  //2019-04-25 13:23:53
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
         } catch (ParseException e) {
             return "";
         }
@@ -374,12 +391,12 @@ public class AppUtil {
 
     }
 
-    public static String getDateFromStringFormat2(String date){  //2019-04-25 13:23:53
+    public static String getDateFromStringFormat2(String date) {  //2019-04-25 13:23:53
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formatter1 = new SimpleDateFormat("dd-MM-yyyy");
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
 
         } catch (ParseException e) {
             return "";
@@ -391,12 +408,12 @@ public class AppUtil {
 
     }
 
-    public static String getHourFromStringFormat(String date){  //2019-04-25 13:23:53
+    public static String getHourFromStringFormat(String date) {  //2019-04-25 13:23:53
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
         } catch (ParseException e) {
             return "";
         }
@@ -406,12 +423,13 @@ public class AppUtil {
         return format.format(date1);
 
     }
-    public static String getMinutesFromStringFormat(String date){  //2019-04-25 13:23:53
+
+    public static String getMinutesFromStringFormat(String date) {  //2019-04-25 13:23:53
         Date date1;
-        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat formatter1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         formatter1.setTimeZone(TimeZone.getTimeZone("GMT+07:00"));
         try {
-            date1=formatter1.parse(date);
+            date1 = formatter1.parse(date);
         } catch (ParseException e) {
             return "";
         }

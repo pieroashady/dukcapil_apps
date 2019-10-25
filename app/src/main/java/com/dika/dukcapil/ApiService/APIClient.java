@@ -1,5 +1,8 @@
 package com.dika.dukcapil.ApiService;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
@@ -24,6 +27,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 
 public class APIClient {
+    SharedPreferences sharedPreferences;
 
     private static Retrofit retrofit = null;
 
@@ -45,9 +49,13 @@ public class APIClient {
         return retrofit;
     }
 
+    public static String sharedPreferenced(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("API_KEY", Context.MODE_PRIVATE);
+        return sharedPreferences.getString("TOKEN", "");
+    }
+
 
     public static Retrofit getClientWithApi() {
-
         Interceptor interceptor = new Interceptor() {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {

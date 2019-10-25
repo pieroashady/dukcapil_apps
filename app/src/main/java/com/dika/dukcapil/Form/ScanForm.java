@@ -5,16 +5,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,25 +24,24 @@ import android.widget.Toast;
 
 import com.dika.dukcapil.ApiService.APIClient;
 import com.dika.dukcapil.ApiService.APIInterfaceRest;
-import com.dika.dukcapil.ApiService.AppUtil;
-import com.dika.dukcapil.Models.Payload;
+import com.dika.dukcapil.Camera.CustomCamera;
 import com.dika.dukcapil.Models.StatusScan;
-import com.dika.dukcapil.Models.Upload;
 import com.dika.dukcapil.R;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.gson.JsonObject;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,12 +51,13 @@ import static android.graphics.Bitmap.CompressFormat.JPEG;
 public class ScanForm extends AppCompatActivity {
 
     public static int PICK_IMAGE = 101;
+    public static int ID_R = 102;
     public static int FOLDER1_REQUEST = 104;
     APIInterfaceRest apiInterface;
 
-    Button btnScan;
+    Button btnScan, btnPhoto, btnGallery;
     EditText editConvert;
-    String basePhoto64;
+    String basePhoto64, photoBase64, face, decode;
     Bitmap ktpBitmap;
     ImageButton imgKtp;
     String getBase;
@@ -66,16 +65,36 @@ public class ScanForm extends AppCompatActivity {
     String imageResult = "";
     TextView txtNik, txtIsCard, txtIsSignature, txtBase64Photo, txtBase64Signature, txtResult;
     ImageView imgFace, imgSignature;
+    SharedPreferences sharedPreferences;
+    Intent intent;
+    TextView txtHello;
+    ImageView imgView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_form);
 
+        imgView = findViewById(R.id.imgView);
+
+        btnGallery = findViewById(R.id.btnGallery);
+        btnGallery.setOnClickListener((b)->{
+            galleryIntent();
+        });
+        txtHello = findViewById(R.id.editHello);
+        intent = getIntent();
+        btnPhoto = findViewById(R.id.btnPhoto);
+        btnPhoto.setOnClickListener((c)->{
+//            CropImage.activity().start(ScanForm.this);
+            goToCustomCamera();
+
+        });
+
         txtResult = findViewById(R.id.txtResult);
         txtResult.setVisibility(View.GONE);
 
-        btnScan = findViewById(R.id.btnScan);
+        btnScan = findViewById(R.id.btnValidate);
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,10 +103,10 @@ public class ScanForm extends AppCompatActivity {
             }
         });
 
-        imgKtp = findViewById(R.id.img1);
-        imgKtp.setOnClickListener((x)->{
-            galleryIntent();
-        });
+//        imgKtp = findViewById(R.id.img1);
+//        imgKtp.setOnClickListener((x)->{
+//            galleryIntent();
+//        });
 
         txtNik = findViewById(R.id.nik);
         txtIsSignature = findViewById(R.id.isIdCard);
@@ -114,6 +133,10 @@ public class ScanForm extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    private void goToCustomCamera(){
+        startActivityForResult(new Intent(ScanForm.this, CustomCamera.class), ID_R);
+    }
+
     private void galleryIntent() {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -127,8 +150,42 @@ public class ScanForm extends AppCompatActivity {
 
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             galleyPicker(data);
+        } else {
+            if (requestCode == ID_R && resultCode == CustomCamera.RESULT_CODE){
+//                sharedPreferences = getSharedPreferences("Key", Context.MODE_PRIVATE);
+//                String image = sharedPreferences.getString("image", "");
+                data = getIntent();
+                String image = data.getExtras().getString("image");
+                txtHello.setText(image);
+                imgView.setImageURI(Uri.parse(image));
+//                Toast.makeText(ScanForm.this, image, Toast.LENGTH_LONG).show();
+            }
         }
     }
+//        } else if (requestCode = ID_R && resultCode = CustomCamera.RESULT_CODE){
+//
+//        }
+//        else {
+//           if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+//                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//                if (resultCode == RESULT_OK) {
+//                    Uri resultUri = result.getUri();
+//                    imgKtp.setImageURI(resultUri);
+//                    InputStream stream = null;
+//                    try {
+//                        stream = this.getContentResolver().openInputStream(resultUri);
+//                    } catch (FileNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Bitmap selected = BitmapFactory.decodeStream(stream);
+//                    imageResult = "data:image/jpeg;base64," + encodeToBase64(selected);
+//                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                    Exception error = result.getError();
+//                    error.printStackTrace();
+//                }
+//            }
+//        }
+
 
     private void galleyPicker(Intent data) {
         try {
@@ -136,8 +193,9 @@ public class ScanForm extends AppCompatActivity {
             InputStream imageStream = null;
             imageStream = this.getContentResolver().openInputStream(filePath);
             Bitmap selected = BitmapFactory.decodeStream(imageStream);
+            Bitmap bitmap = Bitmap.createBitmap(selected, 50, 100, 100, 100);
             Bitmap resized = Bitmap.createScaledBitmap(selected, 600, 700, false);
-            imgKtp.setImageBitmap(resized);
+            imgView.setImageBitmap(bitmap);
             String x = "data:image/jpeg;base64," + encodeToBase64(selected);
             imageResult = "data:image/jpeg;base64," + encodeToBase64(selected);
         } catch (IOException e) {
@@ -187,6 +245,7 @@ public class ScanForm extends AppCompatActivity {
         }
 
         showLoading();
+        sharedPreferences = getSharedPreferences("Key", Context.MODE_PRIVATE);
         Call<StatusScan> call = apiInterface.getScanData(RequestBody.create(MediaType.parse("application/json"), result.toString()));
         call.enqueue(new Callback<StatusScan>() {
             @Override
@@ -205,12 +264,21 @@ public class ScanForm extends AppCompatActivity {
                         Toast.makeText(ScanForm.this, "SUCCESS", Toast.LENGTH_LONG).show();
                         // get NIK
                         String nik = statusScan.getPayload().getData().getNik();
+                        txtNik.setVisibility(View.VISIBLE);
                         txtNik.setText(nik);
+                        // save NIK to memory
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("NIK", nik);
                         //  get Face Photo
-                        String photoBase64 = statusScan.getPayload().getData().getBase64Photo();
-                        String face = photoBase64.split(",")[1];
+                        imgFace.setVisibility(View.VISIBLE);
+                        photoBase64 = statusScan.getPayload().getData().getBase64Photo();
+                        face = photoBase64.split(",")[1];
                         decodeBase64(face, imgFace);
+                        // save base64 image result
+                        editor.putString("Face", face);
+                        editor.apply();
                         // get Signature Photo
+                        imgSignature.setVisibility(View.VISIBLE);
                         String signatureBase64 = statusScan.getPayload().getData().getBase64Signature();
                         String signature = signatureBase64.split(",")[1];
                         decodeBase64(signature, imgSignature);
