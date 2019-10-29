@@ -11,9 +11,12 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,20 +58,21 @@ public class ScanForm extends AppCompatActivity {
     public static int FOLDER1_REQUEST = 104;
     APIInterfaceRest apiInterface;
 
-    Button btnScan, btnPhoto, btnGallery;
+    Button btnScan, btnPhoto, btnGallery, btnRotate;
     EditText editConvert;
     String basePhoto64, photoBase64, face, decode;
     Bitmap ktpBitmap;
     ImageButton imgKtp;
-    String getBase;
+    String getBase, token;
     TextInputEditText editText;
     String imageResult = "";
     TextView txtNik, txtIsCard, txtIsSignature, txtBase64Photo, txtBase64Signature, txtResult;
-    ImageView imgFace, imgSignature;
+    ImageView imgFace, imgSignature, imgBorder;
     SharedPreferences sharedPreferences;
     Intent intent;
     TextView txtHello;
     ImageView imgView;
+    Boolean yeah = false;
 
 
     @Override
@@ -77,19 +81,29 @@ public class ScanForm extends AppCompatActivity {
         setContentView(R.layout.activity_scan_form);
 
         imgView = findViewById(R.id.imgView);
+        imgBorder = findViewById(R.id.border);
+
+        btnRotate = findViewById(R.id.btnRotate);
+        btnRotate.setVisibility(View.GONE);
+//        btnRotate.setOnClickListener((v)->{
+//            rotateImage(imgView);
+//        });
 
         btnGallery = findViewById(R.id.btnGallery);
-        btnGallery.setOnClickListener((b)->{
+        btnGallery.setOnClickListener((b) -> {
             galleryIntent();
         });
         txtHello = findViewById(R.id.editHello);
         intent = getIntent();
         btnPhoto = findViewById(R.id.btnPhoto);
-        btnPhoto.setOnClickListener((c)->{
+        btnPhoto.setOnClickListener((c) -> {
 //            CropImage.activity().start(ScanForm.this);
             goToCustomCamera();
 
         });
+
+        sharedPreferences = getSharedPreferences("API_KEY", Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("TOKEN", "");
 
         txtResult = findViewById(R.id.txtResult);
         txtResult.setVisibility(View.GONE);
@@ -121,7 +135,6 @@ public class ScanForm extends AppCompatActivity {
         imgSignature = findViewById(R.id.imgSignature);
 
 
-
 //        initToolbar();
     }
 
@@ -133,7 +146,7 @@ public class ScanForm extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void goToCustomCamera(){
+    private void goToCustomCamera() {
         startActivityForResult(new Intent(ScanForm.this, CustomCamera.class), ID_R);
     }
 
@@ -151,40 +164,59 @@ public class ScanForm extends AppCompatActivity {
         if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             galleyPicker(data);
         } else {
-            if (requestCode == ID_R && resultCode == CustomCamera.RESULT_CODE){
+            if (requestCode == ID_R && resultCode == CustomCamera.RESULT_CODE) {
 //                sharedPreferences = getSharedPreferences("Key", Context.MODE_PRIVATE);
 //                String image = sharedPreferences.getString("image", "");
-                data = getIntent();
-                String image = data.getExtras().getString("image");
-                txtHello.setText(image);
+                String image = data.getStringExtra("image");
+
+                ExifInterface exif = null;
+                try {
+                    exif = new ExifInterface(image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                        ExifInterface.ORIENTATION_UNDEFINED);
+
                 imgView.setImageURI(Uri.parse(image));
-//                Toast.makeText(ScanForm.this, image, Toast.LENGTH_LONG).show();
+
+                btnRotate.setVisibility(View.VISIBLE);
+                btnRotate.setOnClickListener((f) -> {
+                    rotateImage(imgView);
+                });
+
+
+                Matrix matrix = new Matrix();
+                matrix.postRotate(270);
+                Bitmap border = ((BitmapDrawable)imgView.getDrawable()).getBitmap();
+                Bitmap scaledBitmap = Bitmap.createBitmap(border, 800, imgView.getHeight() - 100, 1500, 2000, matrix, true);
+//
+                imgView.setImageBitmap(scaledBitmap);
+
+//                imgView.setRotation((float) 270.0);
+                txtHello.setText(image);
+                imageResult = encodeToBase64(scaledBitmap);
+
+
+//                Log.d("DEBUG", "Bitmap width = " + border.getWidth());
+//                Log.d("DEBUG", "Bitmap height = " + border.getHeight());
+
+                int width = imgView.getWidth();
+                int height = imgView.getHeight();
+                int maxW = imgView.getMaxWidth();
+                int maxH = imgView.getMaxHeight();
+                Log.d("DEBUG", "width = " + width + " height = " + height);
+                Log.d("DEBUG", "maxw = " + maxW + " maxH = " + maxH);
+
+
+//                Bitmap images = Bitmap.createScaledBitmap(scaledBitmap,  scaledBitmap.getWidth(), scaledBitmap.getHeight(), true);
+
+//                imgView.setImageURI(Uri.parse(image));
+////                Toast.makeText(ScanForm.this, image, Toast.LENGTH_LONG).show();
             }
         }
     }
-//        } else if (requestCode = ID_R && resultCode = CustomCamera.RESULT_CODE){
 //
-//        }
-//        else {
-//           if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-//                CropImage.ActivityResult result = CropImage.getActivityResult(data);
-//                if (resultCode == RESULT_OK) {
-//                    Uri resultUri = result.getUri();
-//                    imgKtp.setImageURI(resultUri);
-//                    InputStream stream = null;
-//                    try {
-//                        stream = this.getContentResolver().openInputStream(resultUri);
-//                    } catch (FileNotFoundException e) {
-//                        e.printStackTrace();
-//                    }
-//                    Bitmap selected = BitmapFactory.decodeStream(stream);
-//                    imageResult = "data:image/jpeg;base64," + encodeToBase64(selected);
-//                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-//                    Exception error = result.getError();
-//                    error.printStackTrace();
-//                }
-//            }
-//        }
 
 
     private void galleyPicker(Intent data) {
@@ -193,14 +225,42 @@ public class ScanForm extends AppCompatActivity {
             InputStream imageStream = null;
             imageStream = this.getContentResolver().openInputStream(filePath);
             Bitmap selected = BitmapFactory.decodeStream(imageStream);
-            Bitmap bitmap = Bitmap.createBitmap(selected, 50, 100, 100, 100);
+            int bitWidth = selected.getWidth();
+            int bitHeight = selected.getHeight();
+//
+//            // 3. Size of camera preview on screen
+//            int preWidth = preview.getWidth();
+//            int preHeight = preview.getHeight();
+            Bitmap bitmap = Bitmap.createBitmap(selected);
             Bitmap resized = Bitmap.createScaledBitmap(selected, 600, 700, false);
             imgView.setImageBitmap(bitmap);
-            String x = "data:image/jpeg;base64," + encodeToBase64(selected);
-            imageResult = "data:image/jpeg;base64," + encodeToBase64(selected);
+            String x = encodeToBase64(selected);
+            imageResult = encodeToBase64(selected);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void rotateImage(ImageView view) {
+
+        Bitmap border = ((BitmapDrawable) imgView.getDrawable()).getBitmap();
+
+        int width = border.getWidth();
+        int height = border.getHeight();
+        int newWidth = 200;
+        int newHeight = 200;
+
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+
+        Matrix matrix = new Matrix();
+//        matrix.postScale(scaleWidth, scaleHeight);
+        matrix.postRotate(45);
+
+        Bitmap scaledBitmap = Bitmap.createBitmap(border, 800, 600, border.getWidth(), border.getHeight(), matrix, true);
+//            view.setRotation((float) 270);
+        view.setImageBitmap(scaledBitmap);
+        imageResult = encodeToBase64(scaledBitmap);
     }
 
     public String encodeToBase64(Bitmap ktpBitmap) {
@@ -210,13 +270,56 @@ public class ScanForm extends AppCompatActivity {
         byte b[] = baos.toByteArray();
         String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
 
-        return imageEncoded;
+        return "data:image/jpeg;base64," + imageEncoded;
     }
 
-    public void decodeBase64(String resultToShow, ImageView image){
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void decodeBase64(String resultToShow, ImageView image) {
         String viu = resultToShow.replace("data:image/jpeg;base64,", "");
         viu.split(",");
-        byte[] d =  Base64.decode(resultToShow, Base64.DEFAULT);
+        byte[] d = Base64.decode(resultToShow, Base64.DEFAULT);
         Bitmap decoded = BitmapFactory.decodeByteArray(d, 0, d.length);
         image.setImageBitmap(decoded);
     }
@@ -246,48 +349,40 @@ public class ScanForm extends AppCompatActivity {
 
         showLoading();
         sharedPreferences = getSharedPreferences("Key", Context.MODE_PRIVATE);
-        Call<StatusScan> call = apiInterface.getScanData(RequestBody.create(MediaType.parse("application/json"), result.toString()));
+        Call<StatusScan> call = apiInterface.getScanData("Bearer " + token, RequestBody.create(MediaType.parse("application/json"), result.toString()));
         call.enqueue(new Callback<StatusScan>() {
             @Override
             public void onResponse(Call<StatusScan> call, Response<StatusScan> response) {
                 statusScan = response.body();
                 if (statusScan != null) {
                     loading.dismiss();
-                    if(statusScan.getPayload().getData().getIsIdCard().equals(false)){
-                        txtNik.setText("Can't Detect an ID Card");
-                    }
-                    if(statusScan.getPayload().getData().getIsPhotoInside().equals(false)){
-                        txtIsSignature.setText("Cannot Detect Your ID Photo");
-                    }
-                    else {
-                        loading.dismiss();
-                        Toast.makeText(ScanForm.this, "SUCCESS", Toast.LENGTH_LONG).show();
-                        // get NIK
-                        String nik = statusScan.getPayload().getData().getNik();
-                        txtNik.setVisibility(View.VISIBLE);
-                        txtNik.setText(nik);
-                        // save NIK to memory
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("NIK", nik);
-                        //  get Face Photo
-                        imgFace.setVisibility(View.VISIBLE);
-                        photoBase64 = statusScan.getPayload().getData().getBase64Photo();
-                        face = photoBase64.split(",")[1];
-                        decodeBase64(face, imgFace);
-                        // save base64 image result
-                        editor.putString("Face", face);
-                        editor.apply();
-                        // get Signature Photo
-                        imgSignature.setVisibility(View.VISIBLE);
-                        String signatureBase64 = statusScan.getPayload().getData().getBase64Signature();
-                        String signature = signatureBase64.split(",")[1];
-                        decodeBase64(signature, imgSignature);
-                    }
+                    Toast.makeText(ScanForm.this, "SUCCESS", Toast.LENGTH_LONG).show();
+                    // get NIK
+                    String nik = statusScan.getPayload().getData().getNik();
+                    txtNik.setVisibility(View.VISIBLE);
+                    txtNik.setText(nik);
+                    // save NIK to memory
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("NIK", nik);
+                    //  get Face Photo
+                    imgFace.setVisibility(View.VISIBLE);
+                    photoBase64 = statusScan.getPayload().getData().getBase64Photo();
+                    face = photoBase64.split(",")[1];
+                    decodeBase64(face, imgFace);
+                    // save base64 image result
+                    editor.putString("Face", face);
+                    editor.apply();
+                    // get Signature Photo
+                    imgSignature.setVisibility(View.VISIBLE);
+                    String signatureBase64 = statusScan.getPayload().getData().getBase64Signature();
+                    String signature = signatureBase64.split(",")[1];
+                    decodeBase64(signature, imgSignature);
                 } else {
                     loading.dismiss();
                     Toast.makeText(ScanForm.this, "PLEASE SELECT YOUR KTP SCAN IMAGE", Toast.LENGTH_LONG).show();
                 }
             }
+
 
             @Override
             public void onFailure(Call<StatusScan> call, Throwable t) {

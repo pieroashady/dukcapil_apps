@@ -3,7 +3,9 @@ package com.dika.dukcapil.Form;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
@@ -56,6 +58,8 @@ public class VideoThumbnail extends AppCompatActivity {
     APIInterfaceRest apiInterfaceRest;
     Uri file;
     File videoFile, outputFile;
+    String token;
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,9 @@ public class VideoThumbnail extends AppCompatActivity {
         btnGetThumbnail.setOnClickListener((c)->{
             getThumbnail();
         });
+
+        sharedPreferences = getSharedPreferences("API_KEY", Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("TOKEN", "");
     }
 
     private void dispatchTakeVideoIntent() {
@@ -151,7 +158,7 @@ public class VideoThumbnail extends AppCompatActivity {
         }
 
         showLoading();
-        Call<StatusThumbnails> call = apiInterfaceRest.getThumbnails(RequestBody.create(MediaType.parse("application/json"), requestBody.toString()));
+        Call<StatusThumbnails> call = apiInterfaceRest.getThumbnails("Bearer " + token, RequestBody.create(MediaType.parse("application/json"), requestBody.toString()));
         call.enqueue(new Callback<StatusThumbnails>() {
             @Override
             public void onResponse(Call<StatusThumbnails> call, Response<StatusThumbnails> response) {

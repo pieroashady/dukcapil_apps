@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.dika.dukcapil.Form.NikValidation;
 import com.dika.dukcapil.Form.ScanForm;
@@ -13,15 +14,18 @@ import com.dika.dukcapil.Form.SimilarForm;
 import com.dika.dukcapil.Form.TokenForm;
 import com.dika.dukcapil.Form.VideoThumbnail;
 import com.dika.dukcapil.R;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MenuActivity extends AppCompatActivity {
 
     Button btnScan, btnSimilar, btnVideo, btnToken, btnNik;
+    LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        layout = findViewById(R.id.layout);
 
         btnScan = findViewById(R.id.btnValidate);
         btnSimilar = findViewById(R.id.btnSimilar);
@@ -42,7 +46,8 @@ public class MenuActivity extends AppCompatActivity {
         });
 
         btnVideo.setOnClickListener((f)->{
-            goToVideoThumbnail();
+            Snackbar snackbar = Snackbar.make(layout, "Sedang dalam mode Pengembangan", Snackbar.LENGTH_LONG);
+            snackbar.show();
         });
 
         btnNik.setOnClickListener((k)->{

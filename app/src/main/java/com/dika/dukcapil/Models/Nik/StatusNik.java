@@ -15,10 +15,10 @@ public class StatusNik implements Serializable, Parcelable
     private Integer status;
     @SerializedName("message")
     @Expose
-    private String message;
+    private Object message;
     @SerializedName("display_message")
     @Expose
-    private String displayMessage;
+    private Boolean displayMessage;
     @SerializedName("payload")
     @Expose
     private Payload payload;
@@ -38,12 +38,12 @@ public class StatusNik implements Serializable, Parcelable
 
     }
             ;
-    private final static long serialVersionUID = -3315868003698178576L;
+    private final static long serialVersionUID = -4412902559586456035L;
 
     protected StatusNik(Parcel in) {
         this.status = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.message = ((String) in.readValue((String.class.getClassLoader())));
-        this.displayMessage = ((String) in.readValue((String.class.getClassLoader())));
+        this.message = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.displayMessage = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         this.payload = ((Payload) in.readValue((Payload.class.getClassLoader())));
     }
 
@@ -58,19 +58,19 @@ public class StatusNik implements Serializable, Parcelable
         this.status = status;
     }
 
-    public String getMessage() {
+    public Object getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(Object message) {
         this.message = message;
     }
 
-    public String getDisplayMessage() {
+    public Boolean getDisplayMessage() {
         return displayMessage;
     }
 
-    public void setDisplayMessage(String displayMessage) {
+    public void setDisplayMessage(Boolean displayMessage) {
         this.displayMessage = displayMessage;
     }
 

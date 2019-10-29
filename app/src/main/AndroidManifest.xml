@@ -24,7 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Camera.CustomCamera"></activity>
+        <activity android:name=".Adapter"></activity>
+        <activity android:name=".Camera.CustomCamera" />
         <activity android:name=".Form.NikValidation" />
         <activity android:name=".Form.TokenForm" />
         <activity android:name=".Form.VideoThumbnail" />

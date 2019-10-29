@@ -8,7 +8,7 @@ import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Dukcapil implements Serializable, Parcelable
+public class Data implements Serializable, Parcelable
 {
 
     @SerializedName("msg")
@@ -17,30 +17,30 @@ public class Dukcapil implements Serializable, Parcelable
     @SerializedName("data")
     @Expose
     private List<Datum> data = null;
-    public final static Parcelable.Creator<Dukcapil> CREATOR = new Creator<Dukcapil>() {
+    public final static Parcelable.Creator<Data> CREATOR = new Creator<Data>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public Dukcapil createFromParcel(Parcel in) {
-            return new Dukcapil(in);
+        public Data createFromParcel(Parcel in) {
+            return new Data(in);
         }
 
-        public Dukcapil[] newArray(int size) {
-            return (new Dukcapil[size]);
+        public Data[] newArray(int size) {
+            return (new Data[size]);
         }
 
     }
             ;
-    private final static long serialVersionUID = 760536655537162862L;
+    private final static long serialVersionUID = 551590754236606080L;
 
-    protected Dukcapil(Parcel in) {
+    protected Data(Parcel in) {
         this.msg = ((String) in.readValue((String.class.getClassLoader())));
         in.readList(this.data, (com.dika.dukcapil.Models.Nik.Datum.class.getClassLoader()));
     }
 
-    public Dukcapil() {
+    public Data() {
     }
 
     public String getMsg() {

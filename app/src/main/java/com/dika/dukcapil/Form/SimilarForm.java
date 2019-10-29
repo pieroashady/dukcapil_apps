@@ -50,11 +50,15 @@ public class SimilarForm extends AppCompatActivity {
     APIInterfaceRest apiInterfaceRest;
     StatusSimilar statusSimilar;
     TextView txtResult, txtSimilarity, txtNik;
+    String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_similar_form);
+
+        sharedPreferences = getSharedPreferences("API_KEY", Context.MODE_PRIVATE);
+        token = sharedPreferences.getString("TOKEN", "");
         // get shared preferencces context
         sharedPreferences = getSharedPreferences("Key", Context.MODE_PRIVATE);
         faceKtp = sharedPreferences.getString("Face", "");
@@ -117,7 +121,7 @@ public class SimilarForm extends AppCompatActivity {
         }
 
         showLoading();
-        Call<StatusSimilar> statusSimilarCall = apiInterfaceRest.getCompare(RequestBody.create(MediaType.parse("application/json"), requestBody.toString()));
+        Call<StatusSimilar> statusSimilarCall = apiInterfaceRest.getCompare("Bearer " + token, RequestBody.create(MediaType.parse("application/json"), requestBody.toString()));
         statusSimilarCall.enqueue(new Callback<StatusSimilar>() {
             @Override
             public void onResponse(Call<StatusSimilar> call, Response<StatusSimilar> response) {
@@ -134,7 +138,8 @@ public class SimilarForm extends AppCompatActivity {
                     // get and show Similarity Percentage
                     txtSimilarity.setVisibility(View.VISIBLE);
                     String similarity = statusSimilar.getPayload().getSimilarity();
-                    Double sim = Double.valueOf(similarity);
+                    String replace = similarity.replace("%", "");
+                    Double sim = Double.valueOf(replace);
 
                     if (sim > 45.00) {
                         txtSimilarity.setText(similarity);

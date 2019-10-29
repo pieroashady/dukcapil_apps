@@ -20,23 +20,23 @@ import retrofit2.http.POST;
 public interface APIInterfaceRest {
 
     @POST("get_mp4_thumbnailasync")
-    Call<StatusScan> getAuth(@Body RequestBody body);
+    Call<StatusScan> getAuth(@Header("Authorization") String auth, @Body RequestBody body);
 
     @POST("is_authasync")
     Call<Status> getToken(@Body RequestBody body);
 
     @POST("scan_idasync")
-    Call<StatusScan> getScanData(@Body RequestBody body);
+    Call<StatusScan> getScanData(@Header("Authorization") String auth, @Body RequestBody body);
 
     @POST("detect_facesasync")
-    Call<StatusSimilar> getDetectFace(@Body RequestBody body);
+    Call<StatusSimilar> getDetectFace(@Header("Authorization") String auth, @Body RequestBody body);
 
     @POST("compare_facesasync")
-    Call<StatusSimilar> getCompare(@Body RequestBody body);
+    Call<StatusSimilar> getCompare(@Header("Authorization") String auth, @Body RequestBody body);
 
     @POST("get_mp4_thumbnailsasync")
-    Call<StatusThumbnails> getThumbnails(@Body RequestBody body);
+    Call<StatusThumbnails> getThumbnails(@Header("Authorization") String auth, @Body RequestBody body);
 
     @POST("get_dukcapil_infoasync")
-    Call<StatusNik> validateNik(@Body RequestBody body);
+    Call<StatusNik> validateNik(@Header("Authorization") String auth, @Body RequestBody body);
 }

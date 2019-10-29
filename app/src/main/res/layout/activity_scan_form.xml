@@ -96,6 +96,25 @@
                 android:layout_height="15dp" />
 
             <view
+                class="androidx.viewpager.widget.ViewPager"
+                android:layout_width="match_parent"
+                android:layout_height="15dp" />
+
+            <Button
+                android:id="@+id/btnRotate"
+                android:layout_width="300dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="-4dp"
+                android:layout_marginRight="-4dp"
+                android:background="@drawable/btn_rounded_accent"
+                android:gravity="center"
+                android:text="Change Rotation"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+            <view
                 android:id="@+id/view32s"
                 class="androidx.viewpager.widget.ViewPager"
                 android:layout_width="match_parent"
@@ -108,7 +127,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
-                android:background="@drawable/btn_purple_a400"
+                android:background="@drawable/btn_rounded_accent"
                 android:gravity="center"
                 android:text="Take Photo"
                 android:textAllCaps="false"
@@ -128,7 +147,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
-                android:background="@drawable/btn_purple_a400"
+                android:background="@drawable/btn_rounded_accent"
                 android:gravity="center"
                 android:text="Scan KTP"
                 android:textAllCaps="false"
@@ -148,7 +167,7 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
-                android:background="@drawable/btn_purple_a400"
+                android:background="@drawable/btn_rounded_accent"
                 android:gravity="center"
                 android:text="Take Photo"
                 android:textAllCaps="false"

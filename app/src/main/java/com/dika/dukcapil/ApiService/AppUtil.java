@@ -44,7 +44,8 @@ public class AppUtil {
     public static String API_SECRET = "cuSVrdyCLEQlrz0lotnbChuzX9PEsBWmNTJxCI17h87VKuBPyIqQn5v56qkIqsbyNz9cLooB2fvBYfXBI6b4FzUKGB1ZYkm84vn6";
     public static String GET_TOKEN = TokenForm.API_TOKEN;
     public static String BASE_URL = "https://ec2.primteksolusindo.com/demo/primebiometry/api/dika/";
-    public static String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzE4NDk5OTksImlzcyI6InByaW10ZWtzb2x1c2luZG8uY29tIiwiYXVkIjoiejNqSzNTS0VxakdWaGtTNVZpemw1V3NuMGhSaU0zdHo1a003dWtVNk8wNUpGQ1FiYzV3NFpQM3V6M2Z6aWtsZ2U0R2l1RVN4QWd2bE1POGh5NzBnWXRLIn0.CMna17zu_XFeZaUxA8IoEB-sX-Qqb7_ReCe9OPriiKw";
+    public static String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzIyODE5OTgsImlzcyI6InByaW10ZWtzb2x1c2luZG8uY29tIiwiYXVkIjoiejNqSzNTS0VxakdWaGtTNVZpemw1V3NuMGhSaU0zdHo1a003dWtVNk8wNUpGQ1FiYzV3NFpQM3V6M2Z6aWtsZ2U0R2l1RVN4QWd2bE1POGh5NzBnWXRLIn0.8NBoBSnMHZBrnMmsVqrHpFwJZRlLMsJYXx5MOwKFAfI";
+
     public static boolean isEmpty(EditText editText) {
         return editText.getText() == null
                 || editText.getText().toString().isEmpty();

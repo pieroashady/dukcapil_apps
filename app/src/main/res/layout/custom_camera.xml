@@ -9,12 +9,15 @@
     <TextureView
         android:id="@+id/textureView"
         android:layout_width="match_parent"
-        android:layout_height="566dp" />
+        android:layout_height="match_parent" />
 
     <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="547dp"
+        android:id="@+id/border"
+        android:layout_width="288dp"
+        android:layout_height="414dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginBottom="80dp"
         android:visibility="visible"
         app:srcCompat="@drawable/camera_layout" />
 
@@ -31,7 +34,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="150dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,9 +42,9 @@
                     android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="180dp"
+                    android:layout_marginLeft="150dp"
+                    android:layout_marginRight="180dp"
                     android:clickable="true"
-                    android:foregroundGravity="center"
                     app:srcCompat="@color/amber_300" />
 
 

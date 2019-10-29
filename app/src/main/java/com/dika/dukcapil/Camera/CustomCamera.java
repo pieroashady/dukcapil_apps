@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -24,7 +23,6 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -35,6 +33,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.dika.dukcapil.Form.ScanForm;
@@ -51,7 +50,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CustomCamera extends AppCompatActivity {
+public class CustomCamera extends AppCompatActivity  {
 
     public static final int RESULT_CODE = 10;
     private static final String TAG = "AndroidCamera2Api";
@@ -83,6 +82,7 @@ public class CustomCamera extends AppCompatActivity {
     private byte[] bytes;
     FloatingActionButton fab;
     SharedPreferences sharedPreferences;
+    ImageView imageView;
 
 
     @Override
@@ -90,6 +90,11 @@ public class CustomCamera extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.custom_camera);
         textureView = findViewById(R.id.textureView);
+        imageView = findViewById(R.id.border);
+        int xx = imageView.getWidth();
+        int yy = imageView.getHeight();
+        Log.d("DEBUG", "wid = " + xx + " hig = " + yy);
+
         assert textureView != null;
 //        takePictureButton = findViewById(R.id.btn_takepicture);
         assert takePictureButton != null;
@@ -239,16 +244,15 @@ public class CustomCamera extends AppCompatActivity {
                 @Override
                 public void onCaptureCompleted(CameraCaptureSession session, CaptureRequest request, TotalCaptureResult result) {
                     super.onCaptureCompleted(session, request, result);
-                    sharedPreferences = getSharedPreferences("Key", Context.MODE_PRIVATE);
-
+//                    sharedPreferences = getSharedPreferences("Key", Context.MODE_PRIVATE);
+//
 //                    SharedPreferences.Editor editor = sharedPreferences.edit();
 //                    editor.putString("image", String.valueOf(file));
 //                    editor.apply();
                     Intent intent = new Intent(CustomCamera.this, ScanForm.class);
                     intent.putExtra("image", file.toString());
-                    Log.d("DEBUG", intent.getStringExtra("image"));
-                    setResult(RESULT_CODE);
-                    startActivity(intent);
+                    Log.d("DEBUG", String.valueOf(file));
+                    setResult(RESULT_CODE, intent);
 //                    session.close();
                     finish();
 //                    Toast.makeText(getApplicationContext(), "Saved:" + file, Toast.LENGTH_SHORT).show();

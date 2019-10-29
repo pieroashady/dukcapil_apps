@@ -60,10 +60,9 @@ public class APIClient {
             @Override
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 Request newRequest = chain.request().newBuilder()
-                        .addHeader("Authorization", "Bearer " + AppUtil.TOKEN)
-                        .addHeader("Content-Type", "application/json;  charset=utf-8")
+                        .addHeader("Content-Type", "application/json")
                         .build();
-                return chain.withReadTimeout(2, TimeUnit.MINUTES).proceed(newRequest);
+                return chain.proceed(newRequest);
             }
         };
 

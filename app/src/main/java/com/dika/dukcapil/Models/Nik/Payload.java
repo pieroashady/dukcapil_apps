@@ -10,9 +10,9 @@ import com.google.gson.annotations.SerializedName;
 public class Payload implements Serializable, Parcelable
 {
 
-    @SerializedName("dukcapil")
+    @SerializedName("data")
     @Expose
-    private Dukcapil dukcapil;
+    private Data data;
     public final static Parcelable.Creator<Payload> CREATOR = new Creator<Payload>() {
 
 
@@ -29,25 +29,25 @@ public class Payload implements Serializable, Parcelable
 
     }
             ;
-    private final static long serialVersionUID = -5308509177186617560L;
+    private final static long serialVersionUID = 6264245368906258009L;
 
     protected Payload(Parcel in) {
-        this.dukcapil = ((Dukcapil) in.readValue((Dukcapil.class.getClassLoader())));
+        this.data = ((Data) in.readValue((Data.class.getClassLoader())));
     }
 
     public Payload() {
     }
 
-    public Dukcapil getDukcapil() {
-        return dukcapil;
+    public Data getData() {
+        return data;
     }
 
-    public void setDukcapil(Dukcapil dukcapil) {
-        this.dukcapil = dukcapil;
+    public void setData(Data data) {
+        this.data = data;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(dukcapil);
+        dest.writeValue(data);
     }
 
     public int describeContents() {
